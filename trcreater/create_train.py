@@ -9,7 +9,7 @@ from imgproc import ImageProcessing
 
 
 class TrainImages:
-    def __init__(self, tile_datasets, save_dir):
+    def __init__(self, tile_datasets, save_dir, pickle_name="train_data.pickle"):
         """
         @param tile_datasets:
             ラベル(牌単体で写っている画像)のディレクトリのパスのリスト
@@ -29,6 +29,7 @@ class TrainImages:
         """
         self.__tile_datasets = tile_datasets
         self.__save_dir = save_dir
+        self.__pickle_name = pickle_name
         self.__pr_img = ImageProcessing(self.__save_dir)
         # 下記の変数を最終的にピックル化して保存
         self.__train_img_info = {}
@@ -36,16 +37,17 @@ class TrainImages:
 
     def __judge_pickle(self):
         """
-        ディレクトリ直下にpickleがあるかどうか確認
+        直下に学習データpickleがあるかどうか確認
 
         return:
-            pickleの有無, pickle_path
+            pickleの有無
         """
-        file_ = os.listdir(self.__save_dir)
+        file_ = os.listdir("./")
+        regex = re.compile(self.__pickle_name)
         for file_name in file_:
-            if re.search(r'.pickle', file_name):
-                return True, file_name
-        return False, None
+            if re.search(regex, file_name):
+                return True
+        return False
 
 
     def __decide_tiles(self, use_tile_quantity, target_tile_index, isMix=False):
@@ -72,12 +74,12 @@ class TrainImages:
         @param tile_variety:使用する牌の種類(tile_datasetsに渡したリスト番号指定)
         """
         # pickleのロード
-        isPickle , pickle_path = self.__judge_pickle()
+        isPickle = self.__judge_pickle()
         if isPickle:
-            with open(self.__save_dir+"/"+pickle_path, 'rb') as f:
+            with open(self.__pickle_name, 'rb') as f:
                 pickle_tmp = pickle.load(f)
                 self.__train_img_info = pickle_tmp
-        print(self.__train_img_info)
+        # print(self.__train_img_info)
 
         # 指定がない場合全てで画像生成
         if tile_variety is None:
@@ -96,7 +98,7 @@ class TrainImages:
                 print("{}:success save".format(tr_img_name))
                 self.__train_img_info[tr_img_name] = list(created_train_img_info.values())
         # 訓練画像の保存ディレクトリにpickleを保存
-        with open(self.__save_dir+"/train_data.pickle", mode='wb') as f:
+        with open("train_data.pickle", mode='wb') as f:
             pickle.dump(self.__train_img_info, f)
 
 
