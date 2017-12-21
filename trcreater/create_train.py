@@ -9,7 +9,7 @@ from imgproc import ImageProcessing
 
 
 class TrainImages:
-    def __init__(self, tile_datasets, save_dir, pickle_name="train_data.pickle"):
+    def __init__(self, tile_datasets, save_dir):
         """
         @param tile_datasets:
             ラベル(牌単体で写っている画像)のディレクトリのパスのリスト
@@ -29,7 +29,7 @@ class TrainImages:
         """
         self.__tile_datasets = tile_datasets
         self.__save_dir = save_dir
-        self.__pickle_name = pickle_name
+        self.__pickle_name = self.__save_dir + ".pickle"
         self.__pr_img = ImageProcessing(self.__save_dir)
         # 下記の変数を最終的にピックル化して保存
         self.__train_img_info = {}
@@ -98,13 +98,13 @@ class TrainImages:
                 print("{}:success save".format(tr_img_name))
                 self.__train_img_info[tr_img_name] = list(created_train_img_info.values())
         # 訓練画像の保存ディレクトリにpickleを保存
-        with open("train_data.pickle", mode='wb') as f:
+        with open(self.__pickle_name, mode='wb') as f:
             pickle.dump(self.__train_img_info, f)
 
 
 if __name__ == "__main__":
     tile_datasets = ["tile_image"]
-    tr_img = TrainImages(tile_datasets, "train_image")
+    tr_img = TrainImages(tile_datasets, "train_images")
     tr_img.create_train_images()
 
 
