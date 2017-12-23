@@ -26,7 +26,7 @@ class ImageProcessing:
         """
         if not(os.path.exists(self.__save_dir_path)):
             os.mkdir(self.__save_dir_path)
-            print("{}にディレクトリを作成しました".format(self.__save_dir_path))
+            print("ディレクトリ {}を作成しました".format(self.__save_dir_path))
 
 
     def process_image(self, use_tiles, tile_dataset_path, scatter=False):
@@ -53,8 +53,10 @@ class ImageProcessing:
         time_ = str(dt.datetime.today()).replace(" ", "T").replace(".", ":")
         img_name = time_+".jpg"
         use_tile_quantity = len(use_tiles)
-        # 生成した画像の情報を格納する
-        tile_info = {img_name:[]}
+        # 座標とクラスの情報を格納するリスト
+        tile_info_ = []
+        # 座標等の情報と画像名を結びつける
+        tile_info = {}
 
         # TODO バックグランド
         bg = Image.new("RGB", (self.__width, self.__height), (0, 0, 0))
@@ -87,8 +89,8 @@ class ImageProcessing:
             # クラス
             tile_class = onehot(tile)
             # 牌の位置情報を追加
-            tile_info_ = np.array(rectangle+tile_class)
-            tile_info[img_name].append(tile_info_)
+            tile_info_.append(rectangle+tile_class)
+        tile_info[img_name] = np.array(tile_info_)
         bg.save(self.__save_dir_path+'/'+img_name)
         return tile_info
 

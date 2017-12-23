@@ -66,7 +66,7 @@ class TrainImages:
         return use_tiles
 
 
-    def create_train_images(self, create_quantity=3, combination_range=[7,14], tile_variety=None):
+    def create_train_images(self, create_quantity=100000, combination_range=[7,14], tile_variety=None):
         """
         訓練画像を作成する
         @param create_quantity:作成する訓練画像の数
@@ -96,7 +96,7 @@ class TrainImages:
                 created_train_img_info = self.__pr_img.process_image(use_tiles, self.__tile_datasets[target_tile_index])
                 tr_img_name = list(created_train_img_info.keys())[0]
                 print("{}:success save".format(tr_img_name))
-                self.__train_img_info[tr_img_name] = list(created_train_img_info.values())
+                self.__train_img_info[tr_img_name] = created_train_img_info[tr_img_name]
         # 訓練画像の保存ディレクトリにpickleを保存
         with open(self.__pickle_name, mode='wb') as f:
             pickle.dump(self.__train_img_info, f)
@@ -105,7 +105,7 @@ class TrainImages:
 if __name__ == "__main__":
     tile_datasets = ["tile_image"]
     tr_img = TrainImages(tile_datasets, "train_images")
-    tr_img.create_train_images()
+    tr_img.create_train_images(create_quantity=100)
 
 
 
