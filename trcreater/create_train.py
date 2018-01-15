@@ -4,6 +4,7 @@ import cv2
 import pickle
 import os
 import re
+import time
 
 from imgproc import ImageProcessing
 
@@ -84,7 +85,8 @@ class TrainImages:
         # 指定がない場合全てで画像生成
         if tile_variety is None:
             tile_variety = [i for i in range(len(self.__tile_datasets))]
-
+        
+        start = time.time()
         for target_tile_index in tile_variety:
             # 指定された量の画像を生成する。
             for created_count in range(create_quantity):
@@ -95,8 +97,12 @@ class TrainImages:
                 # 画像の加工および保存
                 created_train_img_info = self.__pr_img.process_image(use_tiles, self.__tile_datasets[target_tile_index])
                 tr_img_name = list(created_train_img_info.keys())[0]
-                print("{}:success save".format(tr_img_name))
+                # print("{}:success save".format(tr_img_name))
                 self.__train_img_info[tr_img_name] = created_train_img_info[tr_img_name]
+                if created_count%(create_quantity/100) == 0:
+                    print("time:{}".format(time.time()-start))
+                    print("created:{}/{}".format(created_count, create_quantity))
+                    start = time.time()
         # 訓練画像の保存ディレクトリにpickleを保存
         with open(self.__pickle_name, mode='wb') as f:
             pickle.dump(self.__train_img_info, f)
@@ -104,8 +110,8 @@ class TrainImages:
 
 if __name__ == "__main__":
     tile_datasets = ["tile_image"]
-    tr_img = TrainImages(tile_datasets, "train_images")
-    tr_img.create_train_images(create_quantity=100)
+    tr_img = TrainImages(tile_datasets, "train_images_1000")
+    tr_img.create_train_images(create_quantity=1000)
 
 
 

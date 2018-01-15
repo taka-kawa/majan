@@ -204,7 +204,7 @@ def mkdir(checkpoints="checkpoints"):
         print("ディレクトリ {}を作成しました".format(checkpoints))
 
 
-def train():
+def train(load_model=True):
     priors = pickle.load(open('prior_boxes_ssd300.pkl', 'rb'))
     bbox_util = BBoxUtility(NUM_CLASSES, priors)
     # 学習データのpickle
@@ -217,12 +217,14 @@ def train():
     num_val = len(val_keys)
     # 画像のディレクトリパス
     path_prefix = config['train']['tr_dir'] + "/"
-    gen = Generator(gt, bbox_util, 4, path_prefix, \
+    gen = Generator(gt, bbox_util, int(config['train']['batch_size']), path_prefix, \
                 train_keys, val_keys, \
                 (input_shape[0], input_shape[1]), do_crop=False)
     # モデルロード
     model = SSD300(input_shape, num_classes=NUM_CLASSES)
-    # model.load_weights('weights_SSD300.hdf5', by_name=True)
+    # TODO モデルを最新のものをロードする
+    if load_model:
+        model.load_weights(load_model, by_name=True)
     freeze = ['input_1', 'conv1_1', 'conv1_2', 'pool1', \
               'conv2_1', 'conv2_2', 'pool2', \
               'conv3_1', 'conv3_2', 'conv3_3', 'pool3']
@@ -251,7 +253,7 @@ def train():
 
 
 if __name__ == "__main__":
-    train()
+    train(load_model=False)
 
 
 

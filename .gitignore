@@ -2,5 +2,24 @@ images
 
 .ipynb_chcekpoints
 
-train_image
+# train_image
 
+ssd_keras
+
+images
+
+__pycache__
+
+ラベル画像加工.ipynb
+
+訓練画像生成.ipynb
+
+物体検出.ipynb
+
+extract_edge.ipynb
+
+tile_image
+
+test_image
+
+prior_boxes_ssd300.pkl
