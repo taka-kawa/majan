@@ -7,10 +7,11 @@ import re
 import time
 
 from imgproc import ImageProcessing
+from config import config
 
 
 class TrainImages:
-    def __init__(self, tile_datasets, save_dir):
+    def __init__(self, tile_datasets, save_dir, width=300, height=300, w_h_rate=1.35):
         """
         @param tile_datasets:
             ラベル(牌単体で写っている画像)のディレクトリのパスのリスト
@@ -27,11 +28,14 @@ class TrainImages:
                     |- hatsu.jpg:發
                     |- chun.jpg:中
         @param save_dir:訓練画像を保存するディレクトリのパス
+        @param width:画像のピクセル数(横)
+        @param height:画像のピクセル数(縦)
+        @param w_h_rate:牌の縦横比
         """
         self.__tile_datasets = tile_datasets
         self.__save_dir = save_dir
         self.__pickle_name = self.__save_dir + ".pickle"
-        self.__pr_img = ImageProcessing(self.__save_dir)
+        self.__pr_img = ImageProcessing(self.__save_dir, width, height, w_h_rate)
         # 下記の変数を最終的にピックル化して保存
         self.__train_img_info = {}
 
@@ -67,7 +71,7 @@ class TrainImages:
         return use_tiles
 
 
-    def create_train_images(self, create_quantity=100000, combination_range=[7,14], tile_variety=None):
+    def create_train_images(self, create_quantity=1000, combination_range=[7,14], tile_variety=None):
         """
         訓練画像を作成する
         @param create_quantity:作成する訓練画像の数
@@ -85,7 +89,7 @@ class TrainImages:
         # 指定がない場合全てで画像生成
         if tile_variety is None:
             tile_variety = [i for i in range(len(self.__tile_datasets))]
-        
+
         start = time.time()
         for target_tile_index in tile_variety:
             # 指定された量の画像を生成する。
@@ -103,15 +107,21 @@ class TrainImages:
                     print("time:{}".format(time.time()-start))
                     print("created:{}/{}".format(created_count, create_quantity))
                     start = time.time()
+        print("complete : create images")
         # 訓練画像の保存ディレクトリにpickleを保存
         with open(self.__pickle_name, mode='wb') as f:
             pickle.dump(self.__train_img_info, f)
 
 
 if __name__ == "__main__":
-    tile_datasets = ["tile_image"]
-    tr_img = TrainImages(tile_datasets, "train_images_1000")
-    tr_img.create_train_images(create_quantity=1000)
+    tile_datasets = config["create_train"]["tile_datasets"][1:-1].replace(" ", "").split(",")
+    width = int(config["image_detail"]["width"])
+    height = int(config["image_detail"]["height"])
+    w_h_rate = float(config["image_detail"]["w_h_rate"])
+    save_name = config["create_train"]["save_dir_name"]
+
+    tr_img = TrainImages(tile_datasets, save_name, width, height, w_h_rate)
+    tr_img.create_train_images(create_quantity=int(config["create_train"]["create_quantity"]))
 
 
 

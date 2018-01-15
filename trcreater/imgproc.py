@@ -7,7 +7,7 @@ from PIL import Image
 from onehot import onehot
 
 class ImageProcessing:
-    def __init__(self, save_dir_path, width=300, height=300, w_h_rate=1.35):
+    def __init__(self, save_dir_path, width, height, w_h_rate):
         """
         @param save_dir_path:保存するディレクトリ先
         """
