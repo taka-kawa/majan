@@ -18,8 +18,6 @@ __pycache__
 
 extract_edge.ipynb
 
-tile_image
-
-test_image
+# test_image
 
 prior_boxes_ssd300.pkl
