@@ -11,7 +11,7 @@ from config import config
 
 
 class TrainImages:
-    def __init__(self, tile_datasets, save_dir, width=300, height=300, w_h_rate=1.35):
+    def __init__(self, tile_datasets, save_dir, width=512, height=512, w_h_rate=1.35):
         """
         @param tile_datasets:
             ラベル(牌単体で写っている画像)のディレクトリのパスのリスト

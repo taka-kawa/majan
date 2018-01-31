@@ -50,6 +50,10 @@ class ImageProcessing:
                     |- hatsu:發[36]
                     |- chun:中[37]
         """
+        # 正規化関数
+        norm_x = lambda x: x/self.__width
+        norm_y = lambda y: y/self.__height
+
         time_ = str(dt.datetime.today()).replace(" ", "T").replace(".", ":")
         img_name = time_+".jpg"
         use_tile_quantity = len(use_tiles)
@@ -84,8 +88,8 @@ class ImageProcessing:
             tile_resize = tile_img.resize((tile_w, tile_h))
             # 牌の大きさ分ずらす
             bg.paste(tile_resize, (x, y))
-            # 牌の位置情報
-            rectangle = [x, y, x+tile_w, y+tile_h]
+            # 牌の位置情報(正規化)
+            rectangle = [norm_x(x), norm_y(y), norm_x(x+tile_w), norm_y(y+tile_h)]
             # クラス
             tile_class = onehot(tile)
             # 牌の位置情報を追加

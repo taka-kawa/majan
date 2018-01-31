@@ -18,7 +18,7 @@ from config import config
 
 # 牌の数(34)+分類不能(1)
 NUM_CLASSES = 34+1
-input_shape = (300, 300, 3)
+input_shape = (512, 512, 3)
 base_lr = 3e-4
 
 
@@ -206,7 +206,10 @@ def mkdir(checkpoints="checkpoints"):
 
 def train(load_model=True):
     priors = pickle.load(open('prior_boxes_ssd300.pkl', 'rb'))
+    # priors = None
     bbox_util = BBoxUtility(NUM_CLASSES, priors)
+    print(bbox_util)
+    raise
     # 学習データのpickle
     tr_pickle = config['train']['tr_dir'] + ".pickle"
     gt = pickle.load(open(tr_pickle, 'rb'))
