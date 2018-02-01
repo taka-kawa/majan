@@ -208,8 +208,6 @@ def train(load_model=True):
     priors = pickle.load(open('prior_boxes_ssd300.pkl', 'rb'))
     # priors = None
     bbox_util = BBoxUtility(NUM_CLASSES, priors)
-    print(bbox_util)
-    raise
     # 学習データのpickle
     tr_pickle = config['train']['tr_dir'] + ".pickle"
     gt = pickle.load(open(tr_pickle, 'rb'))
