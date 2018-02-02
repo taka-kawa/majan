@@ -13,7 +13,7 @@ from scipy.misc import imread
 from scipy.misc import imresize
 import tensorflow as tf
 
-from ssd import SSD300, MultiboxLoss, BBoxUtility
+from ssd import SSD512, MultiboxLoss, BBoxUtility
 from config import config
 
 # 牌の数(34)+分類不能(1)
@@ -205,7 +205,7 @@ def mkdir(checkpoints="checkpoints"):
 
 
 def train(load_model=True):
-    priors = pickle.load(open('prior_boxes_ssd300.pkl', 'rb'))
+    priors = pickle.load(open('prior_boxes_ssd512.pkl', 'rb'))
     # priors = None
     bbox_util = BBoxUtility(NUM_CLASSES, priors)
     # 学習データのpickle
@@ -222,7 +222,7 @@ def train(load_model=True):
                 train_keys, val_keys, \
                 (input_shape[0], input_shape[1]), do_crop=False)
     # モデルロード
-    model = SSD300(input_shape, num_classes=NUM_CLASSES)
+    model = SSD512(input_shape, num_classes=NUM_CLASSES)
     # TODO モデルを最新のものをロードする
     if load_model:
         model.load_weights(load_model, by_name=True)
