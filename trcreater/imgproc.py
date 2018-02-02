@@ -62,8 +62,8 @@ class ImageProcessing:
         # 座標等の情報と画像名を結びつける
         tile_info = {}
 
-        # TODO バックグランド
-        bg = Image.new("RGB", (self.__width, self.__height), (0, 0, 0))
+        # bg = Image.new("RGB", (self.__width, self.__height), (0, 0, 0))
+        bg = Image.open("background.jpg").resize((self.__width, self.__height))
         # 牌の幅
         tile_w = random.randint(int(self.__width/use_tile_quantity)-5, \
                                 int(self.__width/use_tile_quantity))
@@ -84,6 +84,9 @@ class ImageProcessing:
 
             # 縮尺合わせる
             tile_img = Image.open(tile_dataset_path+"/"+tile+".jpg")
+            # 回転
+            if random.choice([True, False]):
+                tile_img = tile_img.rotate(180)
             # 牌の大きさを変更
             tile_resize = tile_img.resize((tile_w, tile_h))
             # 牌の大きさ分ずらす
