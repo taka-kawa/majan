@@ -18,6 +18,10 @@ __pycache__
 
 extract_edge.ipynb
 
+opencv_demo.ipynb
+
+VOCdevkit
+
 # test_image
 
 prior_boxes_ssd300.pkl
