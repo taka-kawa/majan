@@ -14,8 +14,8 @@ from keras.layers import Reshape
 from keras.layers import ZeroPadding2D
 from keras.models import Model
 
-from ssd_layers import Normalize
-from ssd_layers import PriorBox
+from .ssd_layers import Normalize
+from .ssd_layers import PriorBox
 
 def SSD512(input_shape, num_classes=21):
     """SSD512 architecture.
