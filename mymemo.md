@@ -18,6 +18,8 @@
 
 - [SSDのライブラリ](https://github.com/rykov8/ssd_keras)  
 
+- [SSD512対応](https://github.com/rykov8/ssd_keras/issues/36)  
+
 
 
 ### 学習データのデータセットの形式

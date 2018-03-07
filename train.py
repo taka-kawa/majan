@@ -204,7 +204,7 @@ def mkdir(checkpoints="checkpoints"):
         print("ディレクトリ {}を作成しました".format(checkpoints))
 
 
-def train(load_model=True):
+def train(load_model=None):
     priors = pickle.load(open('prior_boxes_ssd512.pkl', 'rb'))
     # priors = None
     bbox_util = BBoxUtility(NUM_CLASSES, priors)
@@ -223,7 +223,7 @@ def train(load_model=True):
                 (input_shape[0], input_shape[1]), do_crop=False)
     # モデルロード
     model = SSD512(input_shape, num_classes=NUM_CLASSES)
-    # TODO モデルを最新のものをロードする
+    # TODO モデルを最新のものをロードする(重み)
     if load_model:
         model.load_weights(load_model, by_name=True)
     freeze = ['input_1', 'conv1_1', 'conv1_2', 'pool1', \
@@ -250,11 +250,13 @@ def train(load_model=True):
                                   validation_data=gen.generate(False), \
                                   nb_val_samples=gen.val_batches, \
                                   nb_worker=1)
+
+    model.save('./checkpoints/majan_model.h5')
     print("finish training")
 
 
 if __name__ == "__main__":
-    train(load_model=False)
+    train(load_model=config['train']['weight_path'])
 
 
 
