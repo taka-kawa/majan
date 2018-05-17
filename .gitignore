@@ -25,3 +25,7 @@ VOCdevkit
 # test_image
 
 prior_boxes_ssd300.pkl
+
+*.pickle
+
+*.pptx

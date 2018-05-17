@@ -5,6 +5,7 @@ import numpy as np
 
 from PIL import Image
 from onehot import onehot
+from augmentation import augmentation
 
 class ImageProcessing:
     def __init__(self, save_dir_path, width, height, w_h_rate):
@@ -97,6 +98,8 @@ class ImageProcessing:
             tile_class = onehot(tile)
             # 牌の位置情報を追加
             tile_info_.append(rectangle+tile_class)
+        # 牌を配置し終わったときにノイズを加える
+        bg = augmentation(bg)
         tile_info[img_name] = np.array(tile_info_)
         bg.save(self.__save_dir_path+'/'+img_name)
         return tile_info
