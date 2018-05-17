@@ -6,8 +6,8 @@ import os
 import re
 import time
 
-from imgproc import ImageProcessing
-from config import config
+from .imgproc import ImageProcessing
+from .config import config
 
 
 class TrainImages:
@@ -113,7 +113,7 @@ class TrainImages:
             pickle.dump(self.__train_img_info, f)
 
 
-if __name__ == "__main__":
+def run():
     tile_datasets = config["create_train"]["tile_datasets"][1:-1].replace(" ", "").split(",")
     width = int(config["image_detail"]["width"])
     height = int(config["image_detail"]["height"])
@@ -122,18 +122,4 @@ if __name__ == "__main__":
 
     tr_img = TrainImages(tile_datasets, save_name, width, height, w_h_rate)
     tr_img.create_train_images(create_quantity=int(config["create_train"]["create_quantity"]))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

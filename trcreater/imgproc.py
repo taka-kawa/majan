@@ -4,8 +4,8 @@ import random
 import numpy as np
 
 from PIL import Image
-from onehot import onehot
-from augmentation import augmentation
+from .onehot import onehot
+from .augmentation import augmentation
 
 class ImageProcessing:
     def __init__(self, save_dir_path, width, height, w_h_rate):
