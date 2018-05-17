@@ -16,6 +16,8 @@ import tensorflow as tf
 from ssd import SSD512, MultiboxLoss, BBoxUtility
 from config import config
 
+from trcreater.create_train import run
+
 # 牌の数(34)+分類不能(1)
 NUM_CLASSES = 34+1
 input_shape = (512, 512, 3)
@@ -255,9 +257,13 @@ def train(load_model=None):
     model.save('./checkpoints/majan_model.h5')
     print("finish training")
 
-
 if __name__ == "__main__":
-    train(load_model=config['train']['weight_path'])
+    # 画像生成
+    if int(config['train']['trcreater']) == 0:
+        run()
+    # 訓練
+    if int(config['train']['train']) == 0:
+        train(load_model=config['train']['weight_path'])
 
 
 
