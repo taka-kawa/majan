@@ -226,7 +226,7 @@ def train(load_model=None):
     # モデルロード
     model = SSD512(input_shape, num_classes=NUM_CLASSES)
     # TODO モデルを最新のものをロードする(重み)
-    if load_model:
+    if load_model != "None":
         model.load_weights(load_model, by_name=True)
         print("success load weight")
     freeze = ['input_1', 'conv1_1', 'conv1_2', 'pool1', \
@@ -237,8 +237,9 @@ def train(load_model=None):
         if L.name in freeze:
             L.trainable = False
     # モデル保存用ディレクトリ作成
-    mkdir()
-    callbacks = [keras.callbacks.ModelCheckpoint('./checkpoints/weights.{epoch:02d}-{val_loss:.2f}.hdf5', \
+    model_dir = str(config['train']['model_dir'])
+    mkdir(model_dir)
+    callbacks = [keras.callbacks.ModelCheckpoint('./'+model_dir+'/weights.{epoch:02d}-{val_loss:.2f}.hdf5', \
                                              verbose=1, \
                                              save_weights_only=True), \
                                 keras.callbacks.LearningRateScheduler(schedule)]
